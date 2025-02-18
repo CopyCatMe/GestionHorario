@@ -39,7 +39,7 @@ class UserController extends Controller
 
         // Cambiar la contraseña a la nueva
         $user->password = Hash::make($request->password);
-        $user->save(); // No deberia de salir error y sale.
+        $user->save();
 
         // Iniciar sesión nuevamente después de guardar la nueva contraseña
         Auth::loginUsingId($user->id, true);
