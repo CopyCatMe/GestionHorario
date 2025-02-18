@@ -18,14 +18,17 @@ class UserController extends Controller
     // Establecer la contraseña
     public function setPassword(Request $request)
     {
+        // Validacion de la contraseña
         $request->validate([
             'password' => 'required|string|min:8|confirmed',
         ]);
 
+        // Verificar si el usuario esta logueado
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'Debes iniciar sesión.');
         }
 
+        // Verificar si el usuario que esta logueado es una instancia de User
         $user = Auth::user();
         if (!$user instanceof User) {
             return redirect()->route('login')->with('error', 'Usuario no válido.');
