@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\ForcePasswordChange;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,42 +13,51 @@ class UserController extends Controller
     // Mostrar el formulario para establecer la contraseña
     public function showSetPasswordForm()
     {
-        return view('auth.set-password');
+
+        return view('auth.set-password');  // Asegúrate de que esta vista exista
     }
 
     // Establecer la contraseña
     public function setPassword(Request $request)
     {
-        // Validacion de la contraseña
         $request->validate([
-            'password' => 'required|string|min:8|confirmed',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'confirmed',
+                'regex:/[a-z]/',
+                'regex:/[A-Z]/',
+                'regex:/[0-9]/',
+                'regex:/[@$!%*?&]/'
+            ],
         ]);
 
-        // Verificar si el usuario esta logueado
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'Debes iniciar sesión.');
         }
 
-        // Verificar si el usuario que esta logueado es una instancia de User
         $user = Auth::user();
+
         if (!$user instanceof User) {
             return redirect()->route('login')->with('error', 'Usuario no válido.');
         }
 
-        // Verificar si la contraseña es default
-        if (!Hash::check('default', $user->password)) {
-            // Si no es "default", redirige directamente al dashboard, señalando que el usuario ya esta registrado
-            return redirect()->route('dashboard');
+        // Si ya cambió la contraseña previamente, redirigir al dashboard
+        if ($user->password_changed) {
+            return redirect()->route('dashboard')->with('error', 'Ya has cambiado tu contraseña.');
         }
 
-        // Cambiar la contraseña a la nueva
-        $user->password = Hash::make($request->password);
-        $user->save();
+        // Actualizar la contraseña y marcarla como cambiada
+        $user->update([
+            'password' => Hash::make($request->password),
+            'password_changed' => true,
+        ]);
 
-        // Iniciar sesión nuevamente después de guardar la nueva contraseña
-        Auth::loginUsingId($user->id, true);
+        // Recargar la instancia del usuario para asegurar que los cambios se reflejan
+        $user->refresh();
 
-        // Redirigir al dashboard después de la actualización
-        return redirect()->route('dashboard')->with('success', 'Contraseña actualizada correctamente.');
+        // Redirigir al dashboard después de la actualización de la contraseña
+        return redirect()->route('dashboard')->with('success', 'Contraseña establecida correctamente.');
     }
 }

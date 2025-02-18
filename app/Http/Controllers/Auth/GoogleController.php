@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
-
 
 class GoogleController extends Controller
 {
@@ -18,29 +16,40 @@ class GoogleController extends Controller
 
     public function handleGoogleCallback()
     {
-        try {
-            $googleUser = Socialite::driver('google')->user();
-            $findUser = User::where('email', $googleUser->email)->first();
-
-            if (!$findUser) {
-                $findUser = User::create([
-                    'name' => $googleUser->name,
-                    'email' => $googleUser->email,
-                    'google_id' => $googleUser->id,
-                    'password' => Hash::make('default') // Contraseña temporal
-                ]);
-            }
-
-            // Iniciar sesión
-            Auth::login($findUser, true);
-
-            if (Hash::check('default', $findUser->password)) {
-                return redirect()->route('password.set')->with('warning', 'Debes establecer una nueva contraseña.');
-            }
-
-            return redirect()->route('dashboard');
-        } catch (\Exception $e) {
-            return redirect()->route('login')->with('error', 'Error con Google: ' . $e->getMessage());
+        $googleUser = Socialite::driver('google')->user();
+    
+        // Buscar usuario por external_id y Google
+        $user = User::where('external_id', $googleUser->id)
+                    ->where('external_auth', 'google')
+                    ->first();
+    
+        if (!$user) {
+            // Crear un nuevo usuario
+            $user = User::create([
+                'name' => $googleUser->name,
+                'email' => $googleUser->email,
+                'avatar' => $googleUser->avatar,
+                'external_id' => $googleUser->id,
+                'external_auth' => 'google',
+                'password_changed' => false, // Se fuerza a cambiar la contraseña
+            ]);
+    
+            Auth::login($user);
+            return redirect()->route('password.set'); // Si es nuevo, lo mandamos a cambiar la contraseña
         }
+    
+        // Si el usuario ya existe, iniciamos sesión
+        Auth::login($user);
+    
+        // Si no ha cambiado su contraseña, redirigir a /password/set
+        if (!$user->password_changed) {
+            return redirect()->route('password.set');
+        }
+    
+        // Si ya la cambió, redirigir al dashboard
+        return redirect()->route('dashboard');
     }
+    
+
+    
 }
