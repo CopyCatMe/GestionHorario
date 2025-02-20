@@ -49,7 +49,4 @@ class GoogleController extends Controller
         // Si ya la cambió, redirigir al dashboard
         return redirect()->route('dashboard');
     }
-    
-
-    
 }

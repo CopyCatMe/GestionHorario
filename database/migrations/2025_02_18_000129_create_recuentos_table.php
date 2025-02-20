@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('recuentos', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('id_guardia')->nullable()->constrained('guardias')->cascadeOnDelete();
+            $table->foreignId('id_user')->nullable()->constrained('users')->cascadeOnDelete();
+            $table->integer('guardias_cubiertas')->default(0);
+            $table->integer('ingresos_convivencia')->default(0);
             $table->timestamps();
         });
     }

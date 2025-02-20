@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('horarios', function (Blueprint $table) {
             $table->id();
             $table->enum('dia', \App\Models\User::DIAS_SEMANA)->notNullable();
-            $table->integer('hora')->check('hora BETWEEN 1 AND 6'); // Rango de 1 a 6 horas diarias
+            $table->integer('hora')->checkBetween(1, 6);
             $table->timestamps();
         });
     }

@@ -12,8 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('guardia__profesors', function (Blueprint $table) {
-            $table->id();
+            $table->foreignId('id_guardia')->constrained('guardias')->cascadeOnDelete();
+            $table->foreignId('id_user')->constrained('users')->cascadeOnDelete();
+            $table->boolean('cubrio_guardia')->default(false);
             $table->timestamps();
+            $table->primary(['id_guardia', 'id_user']);
         });
     }
 

@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('guardias', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('id_horario')->constrained('horarios')->cascadeOnDelete();
+            $table->foreignId('id_aula')->constrained('aulas')->cascadeOnDelete();
+            $table->date('fecha');
             $table->timestamps();
         });
     }

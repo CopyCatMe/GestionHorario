@@ -5,7 +5,6 @@ use App\Http\Controllers\Auth\GoogleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckPasswordChanged;
 use App\Http\Middleware\DeleteUserIfPasswordNotSet;
-use Illuminate\Support\Facades\Auth;
 
 // Ruta pública para la página de inicio
 Route::get('/', function () {

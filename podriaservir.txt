@@ -1,0 +1,6 @@
+foreach ($guardia->profesores as $profesor) {
+    echo $profesor->nombre . ' - Cubrió la guardia: ' . $profesor->pivot->cubrio_guardia;
+}
+
+$guardia = Guardia::find(1);
+$profesores = $guardia->profesores; // Obtiene los profesores asignados a esta guardia

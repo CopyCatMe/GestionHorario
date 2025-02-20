@@ -13,7 +13,13 @@ return new class extends Migration
     {
         Schema::create('asistencias', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->unsignedBigInteger('id_user');
+            $table->date('fecha');
+            $table->integer('hora');
+            $table->boolean('presente')->default(true);
+
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+            $table->unique(['id_user', 'fecha', 'hora']); // Permite múltiples registros por día, pero solo uno por hora
         });
     }
 

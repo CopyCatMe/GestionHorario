@@ -13,7 +13,6 @@ class UserController extends Controller
     // Mostrar el formulario para establecer la contraseña
     public function showSetPasswordForm()
     {
-
         return view('auth.set-password');  // Asegúrate de que esta vista exista
     }
 
