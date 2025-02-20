@@ -35,6 +35,8 @@ class User extends Authenticatable
         'password_changed',
         'external_id',
         'external_auth',
+        'rol',
+        'estado',
     ];
     
 
@@ -77,24 +79,10 @@ class User extends Authenticatable
         return $this->belongsTo(Horario::class, 'id_horario');
     }
 
-    // Un profesor tiene muchas asistencias
-    public function asistencias()
+    
+    public function falta_tramos()
     {
-        return $this->hasMany(Asistencia::class, 'id_profesor');
-    }
-
-    // Un profesor puede cubrir muchas guardias
-    public function guardias()
-    {
-        return $this->belongsToMany(Guardia::class, 'guardias_profesores', 'id_profesor', 'id_guardia')
-                    ->withPivot('cubrio_guardia')
-                    ->withTimestamps();
-    }
-
-    // Un profesor puede aparecer en el recuento de guardias
-    public function recuentos()
-    {
-        return $this->hasMany(Recuento::class, 'id_profesor');
+        return $this->hasMany(Falta_Tramo::class);
     }
     
 }

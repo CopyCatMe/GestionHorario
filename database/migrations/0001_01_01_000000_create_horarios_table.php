@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('guardias', function (Blueprint $table) {
+        Schema::create('horarios', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_horario')->constrained('horarios')->cascadeOnDelete();
-            $table->foreignId('id_aula')->constrained('aulas')->cascadeOnDelete();
-            $table->date('fecha');
+            $table->enum('dia', \App\Models\User::DIAS_SEMANA)->notNullable();
+            $table->integer('hora')->checkBetween(1, 6)->notNullable();
+            $table->integer('aula_numero');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('guardias');
+        Schema::dropIfExists('horarios');
     }
 };

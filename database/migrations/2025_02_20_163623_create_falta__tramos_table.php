@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('recuentos', function (Blueprint $table) {
+        Schema::create('falta__tramos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_user')->nullable()->constrained('users')->cascadeOnDelete();
-            $table->integer('guardias_cubiertas')->default(0);
-            $table->integer('guardias_convivencia')->default(0);
+            $table->integer('aula')->notNullable();
+            $table->string('dia')->notNullable();
+            $table->integer('hora')->notNullable();
+            $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('recuentos');
+        Schema::dropIfExists('falta__tramos');
     }
 };

@@ -19,13 +19,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('estado', ['activo', 'inactivo'])->default('activo');
+            $table->enum('rol', ['profesor', 'administrador'])->default('profesor');
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
-            $table->string('profile_photo_path', 2048)->nullable();
-            $table->foreignId('id_horario')->nullable()->constrained('horarios')->nullOnDelete();
-
             $table->timestamps();
-            
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
