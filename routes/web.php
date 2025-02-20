@@ -8,7 +8,7 @@ use App\Http\Middleware\DeleteUserIfPasswordNotSet;
 
 // Ruta pública para la página de inicio
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 // Rutas de Google Auth
