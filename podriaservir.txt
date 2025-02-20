@@ -1,6 +1,30 @@
+// Imprime el nombre de cada profesor asignado a la guardia y si cubrió o no la guardia
 foreach ($guardia->profesores as $profesor) {
     echo $profesor->nombre . ' - Cubrió la guardia: ' . $profesor->pivot->cubrio_guardia;
 }
 
+// Obtiene la lista de profesores asignados a la guardia con id 1
 $guardia = Guardia::find(1);
-$profesores = $guardia->profesores; // Obtiene los profesores asignados a esta guardia
+$profesores = $guardia->profesores;
+
+// Después de guardar una relación guardia-profesor, actualiza el recuento de guardias cubiertas por cada profesor
+$profesor = Profesor::find($profesorId);
+Recuento::actualizarRecuento($profesor);
+
+
+// Obtener el profesor por ID
+$profesor = Profesor::find(1);
+
+// Obtener las guardias cubiertas por este profesor
+$guardiasCubiertas = $profesor->guardias()->wherePivot('cubrio_guardia', true)->count();
+
+// Obtener las guardias que se realizaron en un aula de convivencia
+$guardiasEnConvivencia = Guardia::whereHas('aula', function ($query) {
+    $query->where('es_convivencia', true);
+})->count();
+
+// Mostrar los resultados
+echo "Guardias cubiertas por el profesor: " . $guardiasCubiertas . "\n";
+echo "Guardias realizadas en el aula de convivencia: " . $guardiasEnConvivencia . "\n";
+
+

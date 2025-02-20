@@ -30,10 +30,4 @@ class Guardia extends Model
                     ->withPivot('cubrio_guardia')
                     ->withTimestamps();
     }
-
-    // Una guardia puede tener un recuento
-    public function recuentos()
-    {
-        return $this->hasMany(Recuento::class, 'id_guardia');
-    }
 }
