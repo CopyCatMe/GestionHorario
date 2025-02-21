@@ -74,11 +74,10 @@ class User extends Authenticatable
         ];
     }
     
-    public function horario()
+    public function horarios()
     {
-        return $this->belongsTo(Horario::class, 'id_horario');
-    }
-
+        return $this->hasMany(Horario::class, 'id_user');
+    }    
     
     public function falta_tramos()
     {

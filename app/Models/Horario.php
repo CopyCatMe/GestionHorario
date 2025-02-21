@@ -13,7 +13,7 @@ class Horario extends Model
         'dia',
         'hora',
         'aula_numero',
-        'user_id',
+        'id_user',
     ];
 
     // Un horario puede tener muchas guardias y una guardia puede tener varios horarios
@@ -24,8 +24,9 @@ class Horario extends Model
     }
 
     // Un horario pertenece a un usuario
-    public function user()
+    public function horario()
     {
-        return $this->belongsTo(User::class, 'id_user');
+        return $this->belongsTo(Horario::class, 'id_horario');
     }
+    
 }
