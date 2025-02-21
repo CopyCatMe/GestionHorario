@@ -5,7 +5,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>Gestion Horario - IES Inca Garcilaso</title>
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" type="image/png" href="{{ asset('img/logo.ico') }}">
+        <link rel="shortcut icon" sizes="192x192" href="{{ asset('img/logo.ico') }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

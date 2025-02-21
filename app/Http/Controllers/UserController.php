@@ -28,7 +28,7 @@ class UserController extends Controller
                 'regex:/[a-z]/',
                 'regex:/[A-Z]/',
                 'regex:/[0-9]/',
-                'regex:/[@$!%*?&]/'
+                'regex:/[@$!%*?&.]/'
             ],
         ]);
 
