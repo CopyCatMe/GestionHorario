@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Middleware\ForcePasswordChange;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +12,7 @@ class UserController extends Controller
     // Mostrar el formulario para establecer la contraseña
     public function showSetPasswordForm()
     {
-        return view('auth.set-password');  // Asegúrate de que esta vista exista
+        return view('auth.set-password'); 
     }
 
     // Establecer la contraseña

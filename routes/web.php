@@ -27,3 +27,10 @@ Route::middleware(['auth', DeleteUserIfPasswordNotSet::class])->group(function (
         return view('dashboard');
     })->name('dashboard');
 });
+
+// Middleware para prevenir el acceso a la ruta de registro
+Route::middleware(['auth'])->group(function () {
+    Route::get('/register', function () {
+        return redirect()->route('login');
+    })->name('register');
+});
