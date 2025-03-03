@@ -9,15 +9,15 @@ use Livewire\Component;
 class FaltasList extends Component
 {
     public $faltas = [];
-    public $confirmingDelete = false; // Para controlar el estado del modal
-    public $faltaIdToDelete = null;  // Guardamos el ID de la falta que se va a eliminar
+    public $confirmingDelete = false; 
+    public $faltaIdToDelete = null; 
 
     public function mount()
     {
-        $this->loadFaltas();  // Cargar las faltas cuando el componente se monta
+        $this->loadFaltas();  // Cargar las faltas cuando el componente se inicie
     }
 
-    // Método para cargar las faltas del usuario autenticado
+    // cargar las faltas del usuario autenticado
     public function loadFaltas()
     {
         $this->faltas = Falta_Tramo::where('id_user', Auth::id())
@@ -26,11 +26,11 @@ class FaltasList extends Component
             ->get();
     }
 
-    // Método para confirmar la eliminación de una falta
+    // confirmar la eliminación de una falta
     public function confirmDelete($faltaId)
     {
-        $this->faltaIdToDelete = $faltaId; // Guardamos el ID de la falta a eliminar
-        $this->confirmingDelete = true;    // Mostramos el modal
+        $this->faltaIdToDelete = $faltaId;
+        $this->confirmingDelete = true; 
     }
 
     // Eliminar la falta
@@ -44,7 +44,7 @@ class FaltasList extends Component
                 $this->loadFaltas();  // Recargar las faltas después de la eliminación
             }
         }
-        $this->confirmingDelete = false; // Cerramos el modal
+        $this->confirmingDelete = false; 
     }
 
     public function render()

@@ -56,7 +56,7 @@
                 </table>
             </div>
 
-                <x-dialog-modal wire:model="confirmingDelete">
+                <x-dialog-modal class="fixed inset-0 z-50 flex justify-center items-center bg-gray-500 bg-opacity-75" wire:model="confirmingDelete">
                     <x-slot name="title">
                         Eliminar Falta
                     </x-slot>
