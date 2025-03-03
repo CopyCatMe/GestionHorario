@@ -15,6 +15,21 @@ class FormularioFalta extends Component
     public $modal = false;
     public $horasDisponibles = [];
 
+    public $horarios = [
+        1 => '8:30-9:30',
+        2 => '9:30-10:30',
+        3 => '10:30-11:30',
+        4 => '12:00-13:00',
+        5 => '13:00-14:00',
+        6 => '14:00-15:00',
+        7 => '16:00-17:00',
+        8 => '17:00-18:00',
+        9 => '18:00-19:00',
+        10 => '19:00-20:00',
+        11 => '20:00-21:00',
+        12 => '21:00-22:00'
+    ];
+
     protected $rules = [
         'dia' => 'required|date|after_or_equal:today',
         'horas' => 'required_if:todoElDia,false|array|min:1',
@@ -50,26 +65,11 @@ class FormularioFalta extends Component
         $this->horasDisponibles = array_diff(range(1, 12), $faltasRegistradas);
     }
 
-    public $horarios = [
-        1 => '8:30-9:30',
-        2 => '9:30-10:30',
-        3 => '10:30-11:30',
-        4 => '12:00-13:00',
-        5 => '13:00-14:00',
-        6 => '14:00-15:00',
-        7 => '16:00-17:00',
-        8 => '17:00-18:00',
-        9 => '18:00-19:00',
-        10 => '19:00-20:00',
-        11 => '20:00-21:00',
-        12 => '21:00-22:00'
-    ];
-
     // Si se marca "Día Completo", asignamos todos los índices correctos
     public function updatedTodoElDia()
     {
         if ($this->todoElDia) {
-            $this->horas = array_keys($this->horarios); // Ahora los índices van de 1 a 12
+            $this->horas = array_keys($this->horarios);
         } else {
             $this->horas = [];
         }
@@ -83,11 +83,11 @@ class FormularioFalta extends Component
         foreach ($this->horas as $hora) {
             $existeFalta = Falta_Tramo::where('id_user', Auth::id())
                 ->where('dia', $this->dia)
-                ->where('hora', $hora) // Ya no se usa $hora+1
+                ->where('hora', $hora)
                 ->exists();
 
             if ($existeFalta) {
-                $horaSeleccionada = $this->horarios[$hora]; // Convertir índice a hora real
+                $horaSeleccionada = $this->horarios[$hora];
                 session()->flash('error', "El tramo horario {$horaSeleccionada} ya ha sido registrado para este día.");
                 return;
             }
@@ -97,7 +97,7 @@ class FormularioFalta extends Component
             Falta_Tramo::create([
                 'id_user' => Auth::id(),
                 'dia' => $this->dia,
-                'hora' => $hora, // Ya no sumamos +1, pues los índices van de 1 a 12
+                'hora' => $hora, 
             ]);
         }
 

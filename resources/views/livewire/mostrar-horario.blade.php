@@ -30,26 +30,15 @@
                                 @php
                                     // Obtener los horarios para este día y hora
                                     $horariosPorDia = $usuario->horarios->where('dia', $dia)->where('hora', $hora);
-
-                                    // Verificar si hay una falta para este día y hora
-                                    $falta = $faltas->where('dia', date('Y-m-d', strtotime($dia . ' this week')))
-                                                    ->where('hora', $hora)
-                                                    ->first();
                                 @endphp
                                 <td class="px-4 py-3 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-300">
                                     @if ($horariosPorDia->isNotEmpty())
                                         @foreach ($horariosPorDia as $h)
-                                            <span class="inline-block px-2 py-1 rounded-md text-sm 
-                                                {{ $h->aula_numero === 'Guardia' ? 'bg-red-100 dark:bg-red-700 text-red-900 dark:text-red-200' : 'bg-indigo-100 dark:bg-indigo-700 text-indigo-900 dark:text-indigo-200' }}">
-                                                {{ $h->aula_numero }}
+                                        <span class="inline-block px-2 py-1 rounded-md text-sm 
+                                        {{ $h->aula_numero === 'Guardia' ? 'bg-red-100 dark:bg-red-700 text-red-900 dark:text-red-200' : 'bg-indigo-100 dark:bg-indigo-700 text-indigo-900 dark:text-indigo-200' }}">
+                                            {{ $h->aula_numero }}
                                             </span>
                                         @endforeach
-                                    @endif
-
-                                    @if ($falta)
-                                        <span class="inline-block px-2 py-1 rounded-md text-sm bg-yellow-100 dark:bg-yellow-700 text-yellow-900 dark:text-yellow-200">
-                                            - Falta
-                                        </span>
                                     @else
                                         <span class="text-gray-400 dark:text-gray-500"></span>
                                     @endif
