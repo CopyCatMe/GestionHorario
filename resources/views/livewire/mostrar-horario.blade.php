@@ -16,21 +16,14 @@
                 </thead>
                 <tbody>
                     @php
-                        $horas = [
-                            '8:30-9:30', 
-                            '9:30-10:30',
-                            '10:30-11:30',
-                            '12:00-13:00',
-                            '13:00-14:00',
-                            '14:00-15:00'
-                        ];
-                        $diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+                        $horas = ['1', '2', '3', '4', '5', '6'];
+                        $diasSemana = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes'];
                     @endphp
 
                     @foreach ($horas as $hora)
                         <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-gray-800 dark:even:bg-gray-900">
                             <td class="px-4 py-3 border border-gray-300 dark:border-gray-600 font-semibold text-gray-800 dark:text-gray-300">
-                                {{ $hora }}
+                                {{ $hora }}º
                             </td>
 
                             @foreach ($diasSemana as $dia)
@@ -38,12 +31,8 @@
                                     // Obtener los horarios para este día y hora
                                     $horariosPorDia = $usuario->horarios->where('dia', $dia)->where('hora', $hora);
 
-                                    $fechaInicioSemana = strtotime('last Monday');
-                                    $fechaDia = strtotime("next $dia", $fechaInicioSemana);
-                                    $fechaDia = date('Y-m-d', $fechaDia);
-
                                     // Verificar si hay una falta para este día y hora
-                                    $falta = $faltas->where('dia', $fechaDia)
+                                    $falta = $faltas->where('dia', date('Y-m-d', strtotime($dia . ' this week')))
                                                     ->where('hora', $hora)
                                                     ->first();
                                 @endphp
@@ -59,7 +48,7 @@
 
                                     @if ($falta)
                                         <span class="inline-block px-2 py-1 rounded-md text-sm bg-yellow-100 dark:bg-yellow-700 text-yellow-900 dark:text-yellow-200">
-                                            Falta
+                                            - Falta
                                         </span>
                                     @else
                                         <span class="text-gray-400 dark:text-gray-500"></span>

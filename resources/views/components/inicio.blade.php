@@ -7,8 +7,8 @@
     </h1>
 
     {{-- Componente para el horario del profesor --}}
-    <x-horario.horario-usuario :usuario="auth()->user()" />
-        
+    @livewire('mostrar-horario', ['usuario' => auth()->user()]) 
+           
     {{-- Componente para el formulario de falta --}}
     <livewire:formulario-falta />
 
