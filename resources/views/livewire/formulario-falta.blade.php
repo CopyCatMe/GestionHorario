@@ -50,7 +50,7 @@
                                     class="ml-2 text-sm font-medium text-gray-900 dark:text-white">Día completo</label>
                             </div>
 
-                            <!-- Horas (se desactivan si se marca "Día completo") -->
+                            <!-- Horas -- No lo hace -->
                             <div class="flex flex-col space-y-2">
                                 @php
                                     $horarios = [
@@ -92,22 +92,23 @@
                                 Registrar Falta
                             </button>
                         </div>
+
+                        <!-- Mensajes de éxito o error -->
+                        @if (session('message'))
+                            <div class="mt-4 p-4 bg-green-100 text-green-700 rounded">
+                                {{ session('message') }}
+                            </div>
+                        @endif
+                        @if (session('error'))
+                            <div class="m-4 mb-4 p-4 bg-red-100 text-red-700 rounded">
+                                {{ session('error') }}
+                            </div>
+                        @endif
                     </form>
 
-                    <!-- Mensajes de éxito o error -->
-                    @if (session('message'))
-                        <div class="mt-4 p-4 bg-green-100 text-green-700 rounded">
-                            {{ session('message') }}
-                        </div>
-                    @endif
-                    @if (session('error'))
-                        <div class="mt-4 p-4 bg-red-100 text-red-700 rounded">
-                            {{ session('error') }}
-                        </div>
-                    @endif
+
                 </div>
             </div>
         </div>
     @endif
 </div>
-

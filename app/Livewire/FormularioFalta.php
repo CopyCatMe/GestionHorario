@@ -73,7 +73,7 @@ class FormularioFalta extends Component
         } else {
             $this->horas = [];
         }
-    }
+    }  
 
     // Método para guardar la falta
     public function saveFalta()
