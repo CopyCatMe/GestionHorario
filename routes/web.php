@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\GoogleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckPasswordChanged;
 use App\Http\Middleware\DeleteUserIfPasswordNotSet;
+use App\Livewire\FormularioFalta;
 
 // Ruta pública para la página de inicio
 Route::get('/', function () {
@@ -34,3 +35,6 @@ Route::middleware(['auth'])->group(function () {
         return redirect()->route('login');
     })->name('register');
 });
+
+Route::get('/formulario-falta', FormularioFalta::class);
+

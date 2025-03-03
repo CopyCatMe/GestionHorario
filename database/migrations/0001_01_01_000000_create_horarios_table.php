@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->enum('dia', \App\Models\User::DIAS_SEMANA)->notNullable();
             $table->integer('hora')->checkBetween(1, 6)->notNullable();
-            $table->integer('aula_numero');
+            $table->string('aula_numero');
             $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
