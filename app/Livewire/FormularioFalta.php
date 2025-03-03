@@ -13,11 +13,12 @@ class FormularioFalta extends Component
     public $horas = [];
     public $todoElDia = false;
     public $modal = false;
+    public $horasDisponibles = [];
 
     protected $rules = [
         'dia' => 'required|date|after_or_equal:today',
         'horas' => 'required_if:todoElDia,false|array|min:1',
-        'horas.*' => 'in:8:30-9:30,9:30-10:30,10:30-11:30,12:00-13:00,13:00-14:00,14:00-15:00,16:00-17:00,17:00-18:00,18:00-19:00,19:00-20:00,20:00-21:00,21:00-22:00',
+        'horas.*' => 'integer|min:1|max:12',
     ];
 
     protected $messages = [
@@ -26,34 +27,11 @@ class FormularioFalta extends Component
         'horas.required_if' => 'Debes seleccionar al menos una franja horaria si no eliges "Todo el día".',
     ];
 
-    public function updatedTodoElDia()
-    {
-        if ($this->todoElDia) {
-            // Si se selecciona "Todo el día", se agregan todas las horas
-            $this->horas = [
-                '8:30-9:30',
-                '9:30-10:30',
-                '10:30-11:30',
-                '12:00-13:00',
-                '13:00-14:00',
-                '14:00-15:00',
-                '16:00-17:00',
-                '17:00-18:00',
-                '18:00-19:00',
-                '19:00-20:00',
-                '20:00-21:00',
-                '21:00-22:00'
-            ];
-        } else {
-            // Si no se selecciona "Todo el día", se limpian las horas
-            $this->horas = [];
-        }
-    }
-
     // Abre el modal para ingresar la falta
     public function openModal()
     {
         $this->modal = true;
+        $this->loadHorasDisponibles();
     }
 
     // Cierra el modal y restablece los campos
@@ -63,35 +41,71 @@ class FormularioFalta extends Component
         $this->reset(['dia', 'horas', 'todoElDia']);
     }
 
+    public function loadHorasDisponibles()
+    {
+        $faltasRegistradas = Falta_Tramo::where('id_user', Auth::id())
+            ->where('dia', $this->dia)
+            ->pluck('hora')->toArray(); // Ahora devuelve índices
+
+        $this->horasDisponibles = array_diff(range(1, 12), $faltasRegistradas);
+    }
+
+    public $horarios = [
+        1 => '8:30-9:30',
+        2 => '9:30-10:30',
+        3 => '10:30-11:30',
+        4 => '12:00-13:00',
+        5 => '13:00-14:00',
+        6 => '14:00-15:00',
+        7 => '16:00-17:00',
+        8 => '17:00-18:00',
+        9 => '18:00-19:00',
+        10 => '19:00-20:00',
+        11 => '20:00-21:00',
+        12 => '21:00-22:00'
+    ];
+
+    // Si se marca "Día Completo", asignamos todos los índices correctos
+    public function updatedTodoElDia()
+    {
+        if ($this->todoElDia) {
+            $this->horas = array_keys($this->horarios); // Ahora los índices van de 1 a 12
+        } else {
+            $this->horas = [];
+        }
+    }
+
+    // Método para guardar la falta
     public function saveFalta()
     {
         $this->validate();
 
-        // Validar que no haya otra falta en el mismo día y tramo horario del usuario autenticado
         foreach ($this->horas as $hora) {
             $existeFalta = Falta_Tramo::where('id_user', Auth::id())
                 ->where('dia', $this->dia)
-                ->where('hora', $hora)
+                ->where('hora', $hora) // Ya no se usa $hora+1
                 ->exists();
 
             if ($existeFalta) {
-                session()->flash('error', 'Ya existe una falta en el tramo horario ' . $hora . ' del día ' . $this->dia . '.');
+                $horaSeleccionada = $this->horarios[$hora]; // Convertir índice a hora real
+                session()->flash('error', "El tramo horario {$horaSeleccionada} ya ha sido registrado para este día.");
                 return;
             }
         }
 
-        // Registrar las faltas
         foreach ($this->horas as $hora) {
             Falta_Tramo::create([
                 'id_user' => Auth::id(),
                 'dia' => $this->dia,
-                'hora' => $hora,
+                'hora' => $hora, // Ya no sumamos +1, pues los índices van de 1 a 12
             ]);
         }
 
-        session()->flash('message', 'Falta registrada correctamente.');
-        $this->closeModal(); // Cierra el modal y restablece los campos
+        session()->flash('message', 'Faltas registradas correctamente.');
+        $this->closeModal();
     }
+
+
 
     public function render()
     {

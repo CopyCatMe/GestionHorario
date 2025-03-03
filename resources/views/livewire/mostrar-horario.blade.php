@@ -17,7 +17,7 @@
                 <tbody>
                     @php
                         $horas = ['1', '2', '3', '4', '5', '6'];
-                        $diasSemana = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes'];
+                        $diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
                     @endphp
 
                     @foreach ($horas as $hora)

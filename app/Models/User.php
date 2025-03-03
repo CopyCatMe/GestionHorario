@@ -20,7 +20,7 @@ class User extends Authenticatable
     use TwoFactorAuthenticatable;
 
     // Constante con dias de la semana
-    const DIAS_SEMANA = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes'];
+    const DIAS_SEMANA = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
 
 
     /**

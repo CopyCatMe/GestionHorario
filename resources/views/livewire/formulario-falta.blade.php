@@ -72,8 +72,7 @@
                                 @foreach ($horarios as $key => $hora)
                                     <div class="flex items-center">
                                         <input id="h{{ $key }}" type="checkbox" wire:model="horas"
-                                            value="{{ $hora }}"
-                                            @if ($todoElDia) disabled @endif
+                                            value="{{ $key + 1 }}"
                                             class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
                                         <label for="h{{ $key }}"
                                             class="ml-2 text-sm font-medium text-gray-900 dark:text-white">{{ $hora }}</label>
@@ -111,3 +110,4 @@
         </div>
     @endif
 </div>
+

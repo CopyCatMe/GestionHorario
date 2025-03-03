@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('falta__tramos', function (Blueprint $table) {
             $table->id();
             $table->string('dia')->notNullable();
-            $table->string('hora')->notNullable();
+            $table->integer('hora')->checkBetween(1, 12)->notNullable();
             $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
