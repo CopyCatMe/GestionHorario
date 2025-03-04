@@ -50,7 +50,7 @@
                                     class="ml-2 text-sm font-medium text-gray-900 dark:text-white">Día completo</label>
                             </div>
 
-                            <!-- Horas -- No lo hace -->
+                            <!-- Horas -->
                             <div class="flex flex-col space-y-2">
                                 @php
                                     $horarios = [
