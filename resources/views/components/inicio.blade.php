@@ -7,10 +7,13 @@
         Bienvenido, {{ auth()->user()->name }}!
     </h1>
 
-    {{-- Componente para el horario del profesor autenticado --}}
-    @livewire('mostrar-horario', ['usuario' => auth()->user()]) 
-           
     {{-- Componente para el formulario de falta --}}
     <livewire:formulario-falta />
+
+    {{-- Componente para el dia de guardias --}}
+    <livewire:guardias.profesores-guardias />
+
+    {{-- Componente para el horario del profesor autenticado --}}
+    @livewire('mostrar-horario', ['usuario' => auth()->user()]) 
 
 </div>

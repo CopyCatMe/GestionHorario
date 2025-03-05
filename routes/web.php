@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckPasswordChanged;
 use App\Http\Middleware\DeleteUserIfPasswordNotSet;
 use App\Livewire\FaltasList;
-use App\Livewire\FormularioFalta;
+use App\Livewire\guardias\ProfesoresGuardiasShow;
 
 // Ruta pública para la página de inicio
 Route::get('/', function () {
@@ -25,13 +25,18 @@ Route::middleware(['auth', CheckPasswordChanged::class])->group(function () {
 
 // Middleware que borra al usuario si abandonó el proceso sin establecer la contraseña
 Route::middleware(['auth', DeleteUserIfPasswordNotSet::class])->group(function () {
-    Route::get('/dashboard', function () {
+    Route::get('/', function () {
         return view('dashboard');
     })->name('dashboard');
 });
 
-Route::get('/formulario-falta', FormularioFalta::class)->name('formulario-falta.index');
-Route::get('/faltas', FaltasList::class)->name('faltas');
+Route::get('/faltas', FaltasList::class)->middleware('auth')->name('faltas');
+
+Route::get('/guardias/{dia}', ProfesoresGuardiasShow::class)->middleware('auth')->name('profesores-guardias.show');
+
+Route::get('/guardias', function () {
+    return redirect('/');
+})->middleware('auth');
 
 // Middleware para prevenir el acceso a la ruta de registro
 Route::middleware(['auth'])->group(function () {

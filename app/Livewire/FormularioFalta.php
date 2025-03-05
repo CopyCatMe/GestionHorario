@@ -73,7 +73,7 @@ class FormularioFalta extends Component
         } else {
             $this->horas = [];
         }
-    }  
+    }
 
     // Método para guardar la falta
     public function saveFalta()
@@ -97,11 +97,12 @@ class FormularioFalta extends Component
             Falta_Tramo::create([
                 'id_user' => Auth::id(),
                 'dia' => $this->dia,
-                'hora' => $hora, 
+                'hora' => $hora,
             ]);
         }
 
         session()->flash('message', 'Faltas registradas correctamente.');
+
         $this->closeModal();
     }
 

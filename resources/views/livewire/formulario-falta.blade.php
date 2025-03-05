@@ -5,13 +5,12 @@
     <!-- Modal -->
     @if ($modal)
         <div id="crud-modal" tabindex="-1" aria-hidden="true"
-            class="fixed inset-0 z-50 flex justify-center items-center bg-gray-500 bg-opacity-75">
+            class="fixed inset-0 z-50 flex justify-center items-center bg-gray-700 bg-opacity-50">
             <div class="relative p-4 w-full max-w-md max-h-full">
                 <!-- Modal content -->
                 <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
                     <!-- Modal header -->
-                    <div
-                        class="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200 dark:border-gray-600">
+                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200 dark:border-gray-600">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Formulario de Falta</h3>
                         <button wire:click="closeModal" type="button"
                             class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
@@ -25,6 +24,11 @@
 
                     <!-- Modal body -->
                     <form wire:submit.prevent="saveFalta" class="p-4 md:p-5">
+                        <!-- Aviso de contacto -->
+                        <div class="p-4 mb-4 bg-blue-100 text-blue-700 rounded">
+                            Si se ha equivoca al completar el formulario, por favor contacte con un administrador.
+                        </div>
+
                         <!-- Día -->
                         <div class="mt-4">
                             <label for="dia"
@@ -32,7 +36,6 @@
                             <input type="date" id="dia" wire:model="dia"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                             @error('dia')
-                                <!-- Muestra el mensaje de error para el campo "dia" -->
                                 <span class="text-sm text-red-600">{{ $message }}</span>
                             @enderror
                         </div>
@@ -45,9 +48,9 @@
                             <!-- Checkbox Día Completo -->
                             <div class="flex items-center mb-2">
                                 <input id="dia_completo" type="checkbox" wire:model="todoElDia"
-                                    class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                    class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer">
                                 <label for="dia_completo"
-                                    class="ml-2 text-sm font-medium text-gray-900 dark:text-white">Día completo</label>
+                                    class="ml-2 text-sm font-medium text-gray-900 dark:text-white cursor-pointer">Día completo</label>
                             </div>
 
                             <!-- Horas -->
@@ -73,14 +76,13 @@
                                     <div class="flex items-center">
                                         <input id="h{{ $key }}" type="checkbox" wire:model="horas"
                                             value="{{ $key + 1 }}"
-                                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer">
                                         <label for="h{{ $key }}"
-                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-white">{{ $hora }}</label>
+                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-white cursor-pointer">{{ $hora }}</label>
                                     </div>
                                 @endforeach
                             </div>
                             @error('horas')
-                                <!-- Muestra el mensaje de error para el campo "horas" -->
                                 <span class="text-sm text-red-600">{{ $message }}</span>
                             @enderror
                         </div>
@@ -105,8 +107,6 @@
                             </div>
                         @endif
                     </form>
-
-
                 </div>
             </div>
         </div>
